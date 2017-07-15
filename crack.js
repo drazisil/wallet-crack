@@ -28,17 +28,18 @@ function testPassphrase(phraseToTest) {
 }
 
 function intToCharacterBasedString(characters, num) { // Anoying algorithm..
-	var charBasedString, modulo;
-		
-	charBasedString = "";
+	// console.log(`Starting intToCharacterBasedString,  num: ${num}`)
+	let charBasedString = "";
+	let modulo = 0
 
 	while (num > 0) {
 		modulo = num % characters.length // Basic calculating
 		charBasedString = characters[modulo] + charBasedString; // Just push it before the old characters
 		num = ((num - modulo) / characters.length); // New value of num, annoying calculation
+		console.log(`Testing num: ${num}, modulo: ${modulo}, value: '${charBasedString}'`)
 	} 
 
-	console.log(`Testing num: ${num}, value: ${charBasedString}, fullList: ${characters}`)
+	// console.log(`Testing num: ${num}, modulo: ${modulo}, value: '${charBasedString}')
 	return charBasedString;
 };
 
@@ -68,7 +69,7 @@ function bruteForce(characters, callback) {
 	
 	characters = [""].concat(characters); // Useless empty value to start this array on index = 1
 	
-	let counter = 1;
+	let counter = 0;
 	
 	loop(characters, counter, callback);	
 }
