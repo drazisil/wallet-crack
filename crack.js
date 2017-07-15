@@ -28,7 +28,6 @@ function testPassphrase(phraseToTest) {
 }
 
 function intToCharacterBasedString(characters, num) { // Anoying algorithm..
-	// console.log(`Starting intToCharacterBasedString,  num: ${num}`)
 	let charBasedString = "";
 	let modulo = 0
 
@@ -38,8 +37,6 @@ function intToCharacterBasedString(characters, num) { // Anoying algorithm..
 		num = ((num - modulo) / characters.length); // New value of num, annoying calculation
 		console.log(`Testing num: ${num}, modulo: ${modulo}, value: '${charBasedString}'`)
 	} 
-
-	// console.log(`Testing num: ${num}, modulo: ${modulo}, value: '${charBasedString}')
 	return charBasedString;
 };
 
@@ -79,14 +76,9 @@ var hash = 'HELLO';
  
 const CHARACTERS_TO_TEST = '!#$%&*0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ^_abcdefghijklmnopqrstuvwxyz'
  
- bruteForce(CHARACTERS_TO_TEST, function(value){
-    
+ bruteForce(CHARACTERS_TO_TEST, function(value){    
     
 	testPassphrase(value)
-//	if( hash == value ) {
-//        console.log("Correct value of the hash was: " + value);
- //       return true;
-//    }
     
     return false;
 });
