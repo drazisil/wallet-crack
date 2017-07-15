@@ -1,5 +1,6 @@
 const spawn = require('child_process').spawn;
-var cpu = require('windows-cpu')
+const cpu = require('windows-cpu')
+const fs = require('fs')
 
 // Path to the citcoin-cli executable
 const BITCOIN_CLI_PATH = 'C:\\Program Files\\Bitcoin\\daemon\\bitcoin-cli.exe'
@@ -47,8 +48,11 @@ function loop(startingIndex, characters, i, callback) {
 	
 	// This failsafe will end if the current index can be divided by 1000
 	if (i > 100 && i % 400 === 0 && i !== startingIndex) {
-		console.log(`Current index: ${i}, please try again`)
-		process.exit()
+		fs.writeFile('status.json', JSON.stringify({resumeId: i}), (err) => {
+			if (err) throw err;
+			console.log(`Current resume index: ${i}, stopping.`)
+			process.exit()
+		});
 	}
 	
 	result = callback( intToCharacterBasedString(characters, i ), i );
