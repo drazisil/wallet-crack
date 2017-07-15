@@ -6,7 +6,7 @@ const fs = require('fs')
 const BITCOIN_CLI_PATH = 'C:\\Program Files\\Bitcoin\\daemon\\bitcoin-cli.exe'
 
 // How many seconds between tries
-const DELAY = 0.25
+const DELAY = 0.2
 
 function testPassphrase(phraseToTest) {
 	
