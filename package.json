@@ -1,7 +1,10 @@
 {
-  "name": "crack",
+  "name": "wallet-crack",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Joseph W Becher <jwbecher@drazisil.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "windows-cpu": "^0.1.4"
+  }
 }
