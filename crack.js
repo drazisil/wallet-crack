@@ -29,13 +29,12 @@ function testPassphrase(phraseToTest) {
 
 function intToCharacterBasedString(characters, num) { // Anoying algorithm..
 	let charBasedString = "";
-	let modulo = 0
+	let modulo = 1
 
 	while (num > 0) {
 		modulo = num % characters.length // Basic calculating
 		charBasedString = characters[modulo] + charBasedString; // Just push it before the old characters
 		num = ((num - modulo) / characters.length); // New value of num, annoying calculation
-		console.log(`Testing num: ${num}, modulo: ${modulo}, value: '${charBasedString}'`)
 	} 
 	return charBasedString;
 };
@@ -66,7 +65,7 @@ function bruteForce(characters, callback) {
 	
 	characters = [""].concat(characters); // Useless empty value to start this array on index = 1
 	
-	let counter = 0;
+	let counter = 1;
 	
 	loop(characters, counter, callback);	
 }
@@ -77,6 +76,8 @@ var hash = 'HELLO';
 const CHARACTERS_TO_TEST = '!#$%&*0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ^_abcdefghijklmnopqrstuvwxyz'
  
  bruteForce(CHARACTERS_TO_TEST, function(value){    
+ 
+	console.log(`Testing value: ${value}`)
     
 	testPassphrase(value)
     
