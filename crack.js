@@ -53,18 +53,19 @@ function loop(startingIndex, characters, i, callback) {
 			console.log(`Current resume index: ${i}, stopping.`)
 			process.exit()
 		});
-	}
-	
-	result = callback( intToCharacterBasedString(characters, i ), i );
-		
-	if( result ){ // If callbacks returns true: we did our job!
-		return
 	} else {
-		i++;
-		setTimeout(function() {
-			loop(startingIndex, characters, i, callback)
-		}, (DELAY * 1000));
-	}
+		// Continue loop
+		result = callback( intToCharacterBasedString(characters, i ), i );
+		
+		if( result ){ // If callbacks returns true: we did our job!
+			return
+		} else {
+			i++;
+			setTimeout(function() {
+				loop(startingIndex, characters, i, callback)
+			}, (DELAY * 1000));
+		}	
+	}	
 }
 
 
@@ -82,13 +83,22 @@ function bruteForce(counter, characters, callback) {
 	loop(counter, characters, counter, callback);	
 }
 
+function loadResumeFile() {
+	if (fs.existsSync('status.json')) {
+		return JSON.parse(fs.readFileSync('status.json', 'utf8')).resumeId
+	}
+	return null
+	
+}
+	
+
 // ===================================================
 
 var hash = 'HELLO';
  
 const CHARACTERS_TO_TEST = '!#$%&*0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ^_abcdefghijklmnopqrstuvwxyz'
 
-const STARTING_INDEX = process.argv[2] || 1
+const STARTING_INDEX = loadResumeFile() || process.argv[2] || 1
 
 console.log(`Starting index: ${STARTING_INDEX}`)
 
