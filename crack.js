@@ -1,13 +1,14 @@
 const spawn = require('child_process').spawn;
 
 const bitcoinCliPath = 'C:\\Program Files\\Bitcoin\\daemon\\bitcoin-cli.exe'
-const characters = " !\"\#$%&'()*+,-./0123456789:;<=> @ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+const characters = "!\"\#$%&'()*+,-./0123456789:;<=> @ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+
 const maxCount = 12
+
+//const maxCount = 2
 
 function testPassphrase(phraseToTest) {
 	
-	console.log(passphrase)
-
 	const ls = spawn(bitcoinCliPath, ['walletpassphrase', phraseToTest, '20']);
 
 	ls.stdout.on('data', (data) => {
@@ -19,43 +20,81 @@ function testPassphrase(phraseToTest) {
 	});
 
 	ls.on('close', (code) => {
-		console.log(`child process exited with code ${code}`);
+		// console.log(`child process exited with code ${code}`);
+		if (code === 0) {
+			console.log(`Passphrase is ${phraseToTest}`)
+			process.exit()
+		}
 	});
 }
 
-function setCharAt(str,index2,chr) {
-//	console.log(`str: ${str}, index: ${index2}, chr '${chr}'`)
-    if(index2 > str.length) return str;
-    if(index2 === 0) return chr;
-    return str.substr(0,index2) + chr + str.substr(index2+1);
-}
-
-function walkReplace(phraseToWalk) {
-	let newPhrase = phraseToWalk
+// https://www.npmjs.com/package/node-bruteforce
+function bruteForce(characters, callback) {
 	
-	console.log(`Char length: ${characters.length}`)
+	var i, intToCharacterBasedString, result, sortedCharacters;
 	
-	for (let l = 0; l < maxCount; l++) {
-		for (let i = 0; i < characters.length; i++) {
-			// console.log(`char: ${characters.substr(i, 1)}`)
-			newPhrase = setCharAt(newPhrase, l, characters.substr(i,1))
-				for (let k = l; k < maxCount; k++) {
-//					console.log(`k: ${k}`)
-					for (let j = 0; j < characters.length; j++) {
-						newPhrase = setCharAt(newPhrase, l + k, characters.substr(j,1))
-						console.log(`Made2: ${newPhrase}`);
-					}
-				}
-//			console.log(`Made1: ${newPhrase}`);
+	if(typeof characters == 'string')
+		characters = characters.split("");
+	
+	// Sort all characters
+	characters.sort();
+	characters = characters.filter(function(value, index, arr){
+		if(index < 1) {
+			return true;
+		} else {
+			return value != arr[index-1];
 		}
-//		console.log(`Made-l: ${l}: ${newPhrase}`);
-	}
+	});
+	
+	characters = [""].concat(characters); // Useless empty value to start this array on index = 1
+	
+	intToCharacterBasedString = function(num) { // Anoying algorithm..
+		var charBasedString, modulo;
+		
+		charBasedString = "";
+
+		while (num > 0) {
+			modulo = num % characters.length // Basic calculating
+			charBasedString = characters[modulo] + charBasedString; // Just push it before the old characters
+			num = ((num - modulo) / characters.length); // New value of num, annoying calculation
+		} 
+
+		return charBasedString;
+	};
+	
+	i = 1;
+	
+	(function loop() {
+		result = callback( intToCharacterBasedString( i ) );
+		
+		if( result ){ // If callbacks returns true: we did our job!
+			return
+		} else {
+			i++;
+			setTimeout(function() {
+				loop()
+			}, 200);
+		}
+	}());	
 }
 
-let passphrase = ' '.repeat(maxCount)
 
-console.log(`String: ${passphrase}, length: ${passphrase.length}`)
+var hash = 'HELLO';
+ 
+bruteForce(['!', '#', '$', '%', '&', '*', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '@', 'A', 
+	'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 
+	'V', 'W', 'X', 'Y', 'Z', '^', '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
+	'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'], function(value){
+    
+    console.log(`Testing value: ${value}`)
+	testPassphrase(value)
+//	if( hash == value ) {
+//        console.log("Correct value of the hash was: " + value);
+ //       return true;
+//    }
+    
+    return false;
+});
 
-passphrase = walkReplace(passphrase)
 
 
