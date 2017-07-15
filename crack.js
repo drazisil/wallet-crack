@@ -116,8 +116,11 @@ bruteForce(STARTING_INDEX, CHARACTERS_TO_TEST, function(value, index){
 	
 	// This failsafe will kick in if cpu usage goes over the limit
 	if (results[0] > 60) {
-		console.log(`Cpu usage percent exceeded: ${results[0]}, Current index: ${index}, please try again`)
-		process.exit()
+		fs.writeFile('status.json', JSON.stringify({resumeId: i}), (err) => {
+			if (err) throw err;
+			console.log(`Cpu usage percent exceeded: ${results[0]}, Current resumeId: ${index}, stopping`)
+			process.exit()
+		});
 	}
 		testPassphrase(value)
     
