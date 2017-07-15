@@ -7,8 +7,6 @@ It stops when it no longer gets errors from the RPC calls, or if the CPU load go
 
 ## ToDo
 
-* Create an automatic resume file in case of a crash
-
 * Switch to using actual RPC calls to cut down on `spawn()` CPU overhead
 
 ## Contributing

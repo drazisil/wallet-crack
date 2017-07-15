@@ -47,7 +47,7 @@ function intToCharacterBasedString(characters, num) { // Anoying algorithm..
 function loop(startingIndex, characters, i, callback) {
 	
 	// This failsafe will end if the current index can be divided by 1000
-	if (i > 100 && i % 400 === 0 && i !== startingIndex) {
+	if (i > 100 && i % 1000 === 0 && i !== startingIndex) {
 		fs.writeFile('status.json', JSON.stringify({resumeId: i}), (err) => {
 			if (err) throw err;
 			console.log(`Current resume index: ${i}, stopping.`)
@@ -116,7 +116,7 @@ bruteForce(STARTING_INDEX, CHARACTERS_TO_TEST, function(value, index){
 	
 	// This failsafe will kick in if cpu usage goes over the limit
 	if (results[0] > 60) {
-		fs.writeFile('status.json', JSON.stringify({resumeId: i}), (err) => {
+		fs.writeFile('status.json', JSON.stringify({resumeId: index}), (err) => {
 			if (err) throw err;
 			console.log(`Cpu usage percent exceeded: ${results[0]}, Current resumeId: ${index}, stopping`)
 			process.exit()
