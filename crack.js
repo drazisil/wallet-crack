@@ -4,7 +4,7 @@ const spawn = require('child_process').spawn;
 const BITCOIN_CLI_PATH = 'C:\\Program Files\\Bitcoin\\daemon\\bitcoin-cli.exe'
 
 // How many seconds between tries
-const DELAY = 1
+const DELAY = 0.75
 
 function testPassphrase(phraseToTest) {
 	
