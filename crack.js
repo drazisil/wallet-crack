@@ -1,5 +1,6 @@
 const spawn = require('child_process').spawn;
-var cpu = require('windows-cpu')
+const cpu = require('windows-cpu')
+const fs = require('fs')
 
 // Path to the citcoin-cli executable
 const BITCOIN_CLI_PATH = 'C:\\Program Files\\Bitcoin\\daemon\\bitcoin-cli.exe'
@@ -46,21 +47,25 @@ function intToCharacterBasedString(characters, num) { // Anoying algorithm..
 function loop(startingIndex, characters, i, callback) {
 	
 	// This failsafe will end if the current index can be divided by 1000
-	if (i > 100 && i % 400 === 0 && i !== startingIndex) {
-		console.log(`Current index: ${i}, please try again`)
-		process.exit()
-	}
-	
-	result = callback( intToCharacterBasedString(characters, i ), i );
-		
-	if( result ){ // If callbacks returns true: we did our job!
-		return
+	if (i > 100 && i % 1000 === 0 && i !== startingIndex) {
+		fs.writeFile('status.json', JSON.stringify({resumeId: i}), (err) => {
+			if (err) throw err;
+			console.log(`Current resume index: ${i}, stopping.`)
+			process.exit()
+		});
 	} else {
-		i++;
-		setTimeout(function() {
-			loop(startingIndex, characters, i, callback)
-		}, (DELAY * 1000));
-	}
+		// Continue loop
+		result = callback( intToCharacterBasedString(characters, i ), i );
+		
+		if( result ){ // If callbacks returns true: we did our job!
+			return
+		} else {
+			i++;
+			setTimeout(function() {
+				loop(startingIndex, characters, i, callback)
+			}, (DELAY * 1000));
+		}	
+	}	
 }
 
 
@@ -78,13 +83,22 @@ function bruteForce(counter, characters, callback) {
 	loop(counter, characters, counter, callback);	
 }
 
+function loadResumeFile() {
+	if (fs.existsSync('status.json')) {
+		return JSON.parse(fs.readFileSync('status.json', 'utf8')).resumeId
+	}
+	return null
+	
+}
+	
+
 // ===================================================
 
 var hash = 'HELLO';
  
 const CHARACTERS_TO_TEST = '!#$%&*0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ^_abcdefghijklmnopqrstuvwxyz'
 
-const STARTING_INDEX = process.argv[2] || 1
+const STARTING_INDEX = loadResumeFile() || process.argv[2] || 1
 
 console.log(`Starting index: ${STARTING_INDEX}`)
 
@@ -102,8 +116,11 @@ bruteForce(STARTING_INDEX, CHARACTERS_TO_TEST, function(value, index){
 	
 	// This failsafe will kick in if cpu usage goes over the limit
 	if (results[0] > 60) {
-		console.log(`Cpu usage percent exceeded: ${results[0]}, Current index: ${index}, please try again`)
-		process.exit()
+		fs.writeFile('status.json', JSON.stringify({resumeId: index}), (err) => {
+			if (err) throw err;
+			console.log(`Cpu usage percent exceeded: ${results[0]}, Current resumeId: ${index}, stopping`)
+			process.exit()
+		});
 	}
 		testPassphrase(value)
     
