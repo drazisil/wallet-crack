@@ -1,15 +1,14 @@
 const spawn = require('child_process').spawn;
 
-const bitcoinCliPath = 'C:\\Program Files\\Bitcoin\\daemon\\bitcoin-cli.exe'
-const characters = "!\"\#$%&'()*+,-./0123456789:;<=> @ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+const BITCOIN_CLI_PATH = 'C:\\Program Files\\Bitcoin\\daemon\\bitcoin-cli.exe'
 
-const maxCount = 12
+const DELAY = 500
 
 //const maxCount = 2
 
 function testPassphrase(phraseToTest) {
 	
-	const ls = spawn(bitcoinCliPath, ['walletpassphrase', phraseToTest, '20']);
+	const ls = spawn(BITCOIN_CLI_PATH, ['walletpassphrase', phraseToTest, '20']);
 
 	ls.stdout.on('data', (data) => {
 		// console.log(`stdout: ${data}`);
@@ -73,7 +72,7 @@ function bruteForce(characters, callback) {
 			i++;
 			setTimeout(function() {
 				loop()
-			}, 200);
+			}, DELAY);
 		}
 	}());	
 }
