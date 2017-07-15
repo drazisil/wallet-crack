@@ -38,7 +38,7 @@ function intToCharacterBasedString(characters, num) { // Anoying algorithm..
 		num = ((num - modulo) / characters.length); // New value of num, annoying calculation
 	} 
 
-	console.log(`Testing num: ${num}, value: ${charBasedString}`)
+	console.log(`Testing num: ${num}, value: ${charBasedString}, fullList: ${characters}`)
 	return charBasedString;
 };
 
