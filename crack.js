@@ -46,6 +46,10 @@ function loop(characters, i, callback) {
 	if( result ){ // If callbacks returns true: we did our job!
 		return
 	} else {
+		if (i % 1000 === 0) {
+			console.log(`Current index: ${i}, please try again`)
+			process.exit()
+		}
 		i++;
 		setTimeout(function() {
 			loop(characters, i, callback)
@@ -55,7 +59,7 @@ function loop(characters, i, callback) {
 
 
 // https://www.npmjs.com/package/node-bruteforce
-function bruteForce(characters, callback) {
+function bruteForce(counter, characters, callback) {
 	
 	var intToCharacterBasedString, result;
 	
@@ -65,17 +69,20 @@ function bruteForce(characters, callback) {
 	
 	characters = [""].concat(characters); // Useless empty value to start this array on index = 1
 	
-	let counter = 1;
-	
 	loop(characters, counter, callback);	
 }
 
+// ===================================================
 
 var hash = 'HELLO';
  
 const CHARACTERS_TO_TEST = '!#$%&*0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ^_abcdefghijklmnopqrstuvwxyz'
+
+const STARTING_INDEX = process.argv[2] || 1
+
+console.log(`Starting index: ${STARTING_INDEX}`)
  
- bruteForce(CHARACTERS_TO_TEST, function(value){    
+ bruteForce(STARTING_INDEX, CHARACTERS_TO_TEST, function(value){    
  
 	console.log(`Testing value: ${value}`)
     

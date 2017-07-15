@@ -1,0 +1,7 @@
+{
+  "name": "crack",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Joseph W Becher <jwbecher@drazisil.com>",
+  "license": "MIT"
+}
