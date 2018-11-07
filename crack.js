@@ -2,7 +2,7 @@ const spawn = require('child_process').spawn;
 const cpu = require('windows-cpu')
 const fs = require('fs')
 
-// Path to the citcoin-cli executable
+// Path to the bitcoin-cli executable
 const BITCOIN_CLI_PATH = 'C:\\Program Files\\Bitcoin\\daemon\\bitcoin-cli.exe'
 
 // How many seconds between tries
