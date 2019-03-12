@@ -5,6 +5,6 @@
   "author": "Joseph W Becher <jwbecher@drazisil.com>",
   "license": "MIT",
   "dependencies": {
-    "windows-cpu": "^0.1.4"
+    "windows-cpu": "^1.1.0"
   }
 }
