@@ -2,3 +2,7 @@
 # yarn lockfile v1
 
 
+windows-cpu@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/windows-cpu/-/windows-cpu-1.1.0.tgz#e221b5800a72fcf5b5f6e44a13b9664dea19ebe9"
+  integrity sha512-oMuNlcwFAeDNwRA5mb3d7PGN+cuvdC0ZIJVug6iTgmzDu1iQLDUQh2uk2LIZFfltruu5iQ2WMBJIR5PABKVfUg==
