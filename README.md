@@ -1,5 +1,7 @@
 ## wallet-crack
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/drazisil/wallet-crack.svg)](https://greenkeeper.io/)
+
 This script will attempt all possibilities of your passphrase against your wallet.
 
 It does this by using bitcoin-cli.exe from the Bitcoin QT client to attempt to unlock you wallet.
